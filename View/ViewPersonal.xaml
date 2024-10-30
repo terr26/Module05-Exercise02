@@ -4,13 +4,16 @@
              x:Class="Module07Data_Access.View.ViewPersonal"
              Title="ViewPersonal">
     <VerticalStackLayout>
-        <Label Text="Personal Information"
-           FontSize="20"
-           HorizontalOptions="Center"/>
-        <ListView ItemsSource="{Binding Personalities}">
+        <Label Text="Persona Information"
+               FontSize="20"
+               HorizontalOptions="Center"/>
+
+        <ListView ItemsSource="{Binding PersonalList}">
+
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Name}" Detail="{Binding Gender}"/>
+                    <TextCell Text="{Binding Name}"
+                              Detail="{Binding Gender}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -26,10 +29,11 @@
             <Button Text="Add Person" Command="{Binding AddPersonalCommand}"/>
         </StackLayout>
 
+
         <Label x:Name="ConnectionStatusLabel"
-           Text="{Binding StatusMessage}"
-           FontSize="18"
-           HorizontalOptions="Center"/>
+               Text="{Binding StatusMessage}"
+               FontSize="18"
+               HorizontalOptions="Center"/>
 
     </VerticalStackLayout>
 </ContentPage>

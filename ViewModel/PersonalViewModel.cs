@@ -16,7 +16,6 @@ namespace Module07Data_Access.ViewModel
     {
         private readonly PersonalService _personalService;
         public ObservableCollection<Personal> PersonalList { get; set; }
-
         private bool _isBusy;
         public bool IsBusy
         {
@@ -39,8 +38,10 @@ namespace Module07Data_Access.ViewModel
             }
         }
 
-        //New Personal entry for name, gender, contact no
+        // 
+
         private string _newPersonalName;
+
         public string NewPersonalName
         {
             get => _newPersonalName;
@@ -52,6 +53,7 @@ namespace Module07Data_Access.ViewModel
         }
 
         private string _newPersonalGender;
+
         public string NewPersonalGender
         {
             get => _newPersonalGender;
@@ -63,6 +65,7 @@ namespace Module07Data_Access.ViewModel
         }
 
         private string _newPersonalContactNo;
+
         public string NewPersonalContactNo
         {
             get => _newPersonalContactNo;
@@ -76,24 +79,25 @@ namespace Module07Data_Access.ViewModel
         public ICommand LoadDataCommand { get; }
         public ICommand AddPersonalCommand { get; }
 
-        // PersonalViewModel Constructor
+        //PersonalViewModel Constructor
+
         public PersonalViewModel()
         {
             _personalService = new PersonalService();
             PersonalList = new ObservableCollection<Personal>();
             LoadDataCommand = new Command(async () => await LoadData());
+            AddPersonalCommand = new Command(async () => await AddPerson());
 
             LoadData();
         }
-
         public async Task LoadData()
         {
             if (IsBusy) return;
             IsBusy = true;
-            StatusMessage = "Loading personal data...";
+            StatusMessage = "Loading personal data. . .";
             try
             {
-                var personals = await _personalService.GetAllPersonalAsync();
+                var personals = await _personalService.GetAllPersonalsAsync();
                 PersonalList.Clear();
                 foreach (var personal in personals)
                 {
@@ -113,13 +117,13 @@ namespace Module07Data_Access.ViewModel
 
         private async Task AddPerson()
         {
-            if(IsBusy || string.IsNullOrWhiteSpace(NewPersonalName) || string.IsNullOrWhiteSpace(NewPersonalGender) || string.IsNullOrWhiteSpace(NewPersonalContactNo))
+            if (IsBusy || string.IsNullOrWhiteSpace(NewPersonalName) || string.IsNullOrWhiteSpace(NewPersonalGender) || string.IsNullOrWhiteSpace(NewPersonalContactNo))
             {
                 StatusMessage = "Please fill in all fields before adding";
                 return;
             }
             IsBusy = true;
-            StatusMessage = "Adding new person...";
+            StatusMessage = "Adding new person . . .";
 
             try
             {
@@ -135,7 +139,7 @@ namespace Module07Data_Access.ViewModel
                     NewPersonalName = string.Empty;
                     NewPersonalGender = string.Empty;
                     NewPersonalContactNo = string.Empty;
-                    StatusMessage = "New person added successfully";
+                    StatusMessage = "New person added successfuly";
                 }
                 else
                 {
@@ -146,13 +150,12 @@ namespace Module07Data_Access.ViewModel
             {
                 StatusMessage = $"Failed adding person: {ex.Message}";
             }
-            finally { IsBusy = false;  }
+            finally { IsBusy = false; }
         }
-
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string poropertyName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(poropertyName));
         }
     }
 }

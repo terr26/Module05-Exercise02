@@ -19,47 +19,49 @@ namespace Module07Data_Access.Services
             _connectionString = dbService.GetConnectionString();
         }
 
-        public async Task<List<Personal>> GetAllPersonalAsync()
+        public async Task<List<Personal>> GetAllPersonalsAsync()
         {
-            var personalService = new List<Personal>();
+            var personalServices = new List<Personal>(); // Changed to personalList
             using (var conn = new MySqlConnection(_connectionString))
             {
                 await conn.OpenAsync();
 
-                // Retrieve Data
+                //Retrieve Data
                 var cmd = new MySqlCommand("SELECT * FROM tblPersonal", conn);
 
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
                     while (await reader.ReadAsync())
                     {
-                        personalService.Add(new Personal
+                        personalServices.Add(new Personal
                         {
                             ID = reader.GetInt32("ID"),
                             Name = reader.GetString("Name"),
                             Gender = reader.GetString("Gender"),
-                            ContactNo = reader.GetString("ContactNo")
+                            ContactNo = reader.GetString("ContactNo") // Changed to double quotes
                         });
                     }
                 }
             }
-            return personalService;
+            return personalServices;
         }
 
         public async Task<bool> AddPersonalAsync(Personal newPerson)
         {
             try
             {
-               using (var conn = new MySqlConnection(_connectionString))
+                using (var conn = new MySqlConnection(_connectionString))
                 {
                     await conn.OpenAsync();
-                    var cmd = new MySqlCommand("Insert INTO tblPersonal (Name, Gender, ContactNo) VALUES (@Name, @Gender, @ContactNo)", conn);
+                    var cmd = new MySqlCommand("INSERT INTO tblPersonal (Name, Gender, ContactNo) VALUES (@Name, @Gender, @ContactNo)", conn);
                     cmd.Parameters.AddWithValue("@Name", newPerson.Name);
                     cmd.Parameters.AddWithValue("@Gender", newPerson.Gender);
                     cmd.Parameters.AddWithValue("@ContactNo", newPerson.ContactNo);
 
                     var result = await cmd.ExecuteNonQueryAsync();
+
                     return result > 0;
+
                 }
             }
             catch (Exception ex)
@@ -67,6 +69,7 @@ namespace Module07Data_Access.Services
                 Console.WriteLine($"Error adding personal record: {ex.Message}");
                 return false;
             }
+
 
         }
     }
