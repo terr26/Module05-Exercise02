@@ -39,7 +39,42 @@ namespace Module07Data_Access.ViewModel
             }
         }
 
+        //New Personal entry for name, gender, contact no
+        private string _newPersonalName;
+        public string _NewPersonalName
+        {
+            get => _newPersonalName;
+            set
+            {
+                _newPersonalName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _newPersonalGender;
+        public string NewPersonalGender
+        {
+            get => _newPersonalGender;
+            set
+            {
+                _newPersonalGender = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _newPersonalContactNo;
+        public string NewPersonalContactNo
+        {
+            get => _newPersonalContactNo;
+            set
+            {
+                _newPersonalContactNo = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand LoadDataCommand { get; }
+        public ICommand AddPersonalCommand { get; }
 
         // PersonalViewModel Constructor
         public PersonalViewModel()
@@ -74,6 +109,11 @@ namespace Module07Data_Access.ViewModel
             {
                 IsBusy = false;
             }
+        }
+
+        private async Task AddPerson()
+        {
+            if(IsBusy)
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
