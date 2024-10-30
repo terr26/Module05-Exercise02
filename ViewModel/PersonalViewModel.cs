@@ -41,7 +41,7 @@ namespace Module07Data_Access.ViewModel
 
         //New Personal entry for name, gender, contact no
         private string _newPersonalName;
-        public string _NewPersonalName
+        public string NewPersonalName
         {
             get => _newPersonalName;
             set
@@ -113,7 +113,40 @@ namespace Module07Data_Access.ViewModel
 
         private async Task AddPerson()
         {
-            if(IsBusy)
+            if(IsBusy || string.IsNullOrWhiteSpace(NewPersonalName) || string.IsNullOrWhiteSpace(NewPersonalGender) || string.IsNullOrWhiteSpace(NewPersonalContactNo))
+            {
+                StatusMessage = "Please fill in all fields before adding";
+                return;
+            }
+            IsBusy = true;
+            StatusMessage = "Adding new person...";
+
+            try
+            {
+                var newPerson = new Personal
+                {
+                    Name = NewPersonalName,
+                    Gender = NewPersonalGender,
+                    ContactNo = NewPersonalContactNo
+                };
+                var isSuccess = await _personalService.AddPersonalAsync(newPerson);
+                if (isSuccess)
+                {
+                    NewPersonalName = string.Empty;
+                    NewPersonalGender = string.Empty;
+                    NewPersonalContactNo = string.Empty;
+                    StatusMessage = "New person added successfully";
+                }
+                else
+                {
+                    StatusMessage = "Failed to add the new person";
+                }
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Failed adding person: {ex.Message}";
+            }
+            finally { IsBusy = false;  }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
