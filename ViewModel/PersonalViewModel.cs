@@ -139,7 +139,7 @@ namespace Module07Data_Access.ViewModel
                     NewPersonalName = string.Empty;
                     NewPersonalGender = string.Empty;
                     NewPersonalContactNo = string.Empty;
-                    StatusMessage = "New person added successfuly";
+                    StatusMessage = "New person added successfully";
                 }
                 else
                 {
@@ -150,7 +150,11 @@ namespace Module07Data_Access.ViewModel
             {
                 StatusMessage = $"Failed adding person: {ex.Message}";
             }
-            finally { IsBusy = false; }
+            finally
+            {
+                IsBusy = false;
+                await LoadData();
+            }
         }
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string poropertyName = null)
