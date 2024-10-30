@@ -1,39 +1,53 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Module07Data_Access.ViewModel"
              x:Class="Module07Data_Access.View.ViewPersonal"
              Title="ViewPersonal">
-    <VerticalStackLayout>
-        <Label Text="Persona Information"
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label Text="Persona Information"
                FontSize="20"
                HorizontalOptions="Center"/>
 
-        <ListView ItemsSource="{Binding PersonalList}">
+            <ListView ItemsSource="{Binding PersonalList}" SelectedItem="{Binding SelectedPersonal}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="{Binding Name}" FontSize="Medium"/>
+                                <Label Text="{Binding Gender}" FontSize="Small"/>
+                                <Label Text="{Binding ContactNo}" FontSize="Small"/>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type local:PersonalViewModel}}, Path=SelectedPersonCommand}"
+                            CommandParameter="{Binding .}"/>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding Name}"
-                              Detail="{Binding Gender}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            <Button Text="Load Data" Command="{Binding LoadDataCommand}"/>
 
-        <Button Text="Load Data" Command="{Binding LoadDataCommand}"/>
+            <Label Text="Add New Person" FontSize="Large"/>
+            <Entry Placeholder="Name" Text="{Binding NewPersonalName}"/>
+            <Entry Placeholder="Gender" Text="{Binding NewPersonalGender}"/>
+            <Entry Placeholder="ContactNo" Text="{Binding NewPersonalContactNo}"/>
 
-        <Label Text="Add New Person" FontSize="Large"/>
-        <Entry Placeholder="Name" Text="{Binding NewPersonalName}"/>
-        <Entry Placeholder="Gender" Text="{Binding NewPersonalGender}"/>
-        <Entry Placeholder="ContactNo" Text="{Binding NewPersonalContactNo}"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Button Text="Add Person" Command="{Binding AddPersonalCommand}"/>
+                <Button Text="Delete Person" Command="{Binding DeletePersonCommand}" IsEnabled="{Binding IsPersonSelected}"/>
 
-        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-            <Button Text="Add Person" Command="{Binding AddPersonalCommand}"/>
-        </StackLayout>
+            </StackLayout>
 
 
-        <Label x:Name="ConnectionStatusLabel"
+            <Label x:Name="ConnectionStatusLabel"
                Text="{Binding StatusMessage}"
                FontSize="18"
                HorizontalOptions="Center"/>
 
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
