@@ -8,6 +8,7 @@ public partial class ViewPersonal : ContentPage
     public ViewPersonal()
     {
         InitializeComponent();
+        Title = "Leaves";
 
         var personalViewModel = new PersonalViewModel();
         BindingContext = personalViewModel;

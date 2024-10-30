@@ -3,10 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Module07Data_Access.ViewModel"
              x:Class="Module07Data_Access.View.ViewPersonal"
-             Title="ViewPersonal">
+             Title="Leaves">
     <ScrollView>
         <VerticalStackLayout>
-            <Label Text="Persona Information"
+            <Label Text="Employee List"
                FontSize="20"
                HorizontalOptions="Center"/>
 
